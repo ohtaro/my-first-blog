@@ -1,7 +1,7 @@
 #!/bin/bash
 # Exit on any error
 set -e
-envsubst < ./k8s/base/kustomization.yaml > "./overlays/development/kustomization.yaml"
+envsubst < ./k8s/base/kustomization.yaml > "./k8s/overlays/development/kustomization.yaml"
 
 gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/sample:$CIRCLE_SHA1
 

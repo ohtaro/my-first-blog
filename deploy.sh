@@ -1,8 +1,8 @@
 #!/bin/bash
 # Exit on any error
 set -e
-envsubst < kustomization.yaml > "./overlay/generated-kustomization.yaml"
+envsubst < ./k8s/base/kustomization.yaml > "./overlays/development/kustomization.yaml"
 
 gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/sample:$CIRCLE_SHA1
 
-kubectl kustomize "./overlay" | kubectl apply -f -
+kubectl kustomize "./overlays/development" | kubectl apply -f -

@@ -78,6 +78,5 @@ jobs:
               gcloud config set container/use_client_certificate True
               gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:${CIRCLE_SHA1}
               kubectl version
-              kubectl apply -f ./k8s
-            #  ./deploy.sh
+              ./deploy.sh
             fi

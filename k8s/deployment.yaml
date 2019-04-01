@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-first-blog
+  lables:
+    app: my-first-blog
+spec:
+  replicas: 2
+  selector:
+    matchLables:
+      app: my-first-blog
+  template:
+    metadata:
+      labels:
+        app: my-first-blog
+    spec:
+      containers:
+      - name: my-first-blog
+        image: asia.gcr.io/soe-gcp-development/my-first-blog:latest
+        ports:
+        - containerPort: 80

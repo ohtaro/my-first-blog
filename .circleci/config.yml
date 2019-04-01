@@ -75,6 +75,7 @@ jobs:
               gcloud --quiet config set container/cluster $CLUSTER_NAME
               gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
               gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-            #  gcloud config set container/use_client_certificate True
+              gcloud config set container/use_client_certificate True
+              kubectl apply -f ./k8s
             #  ./deploy.sh
             fi

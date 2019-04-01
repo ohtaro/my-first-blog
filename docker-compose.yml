@@ -1,0 +1,4 @@
+version: "2"
+services:
+  my-first-blog:
+    image: asia.gcr.io/${PROJECT_NAME}/my-first-blog:$CIRCLE_SHA1

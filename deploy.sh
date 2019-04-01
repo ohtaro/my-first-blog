@@ -3,6 +3,6 @@
 set -e
 envsubst < ./k8s/base/kustomization.yaml > "./k8s/overlays/development/kustomization.yaml"
 
-gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/sample:$CIRCLE_SHA1
+gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:$CIRCLE_SHA1
 
 kubectl kustomize "./overlays/development" | kubectl apply -f -

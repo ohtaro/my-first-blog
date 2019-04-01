@@ -16,14 +16,14 @@ commonAnnotations:
   oncallPager: 800-555-1212
 
 # kustomizeでビルドする対象ファイル
-#resources:
-#- /deployment.yaml
-#- /service.yaml
-#- /namespace.yaml
+resources:
+- ./deployment.yaml
+- ./service.yaml
+- ./namespace.yaml
 
 # base
-bases:
-- ../../bases
+#bases:
+#- ../../bases
 
 images:
 - name: asia.gcr.io/soe-gcp-development/my-first-blog

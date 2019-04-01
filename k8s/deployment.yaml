@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: my-first-blog
-        image: asia.gcr.io/soe-gcp-development/my-first-blog:4e14fa48c7d04fe2c162d8020bd9c55bc38250b1
+        image: asia.gcr.io/soe-gcp-development/my-first-blog:latest
         ports:
         - containerPort: 80

@@ -17,9 +17,9 @@ commonAnnotations:
 
 # kustomizeでビルドする対象ファイル
 resources:
-- ./deployment.yaml
-- ./service.yaml
-- ./namespace.yaml
+- ../../base/deployment.yaml
+- ../../base/service.yaml
+- ../../base/namespace.yaml
 
 images:
 - name: asia.gcr.io/soe-gcp-development/my-first-blog

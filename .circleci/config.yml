@@ -10,7 +10,7 @@ jobs:
       GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/account-auth.json
       IMAGE_NAME: my-first-blog
     docker:
-      - image: google/cloud-sdk:171.0.0-alpine
+      - image: google/cloud-sdk:240.0.0-slim
     steps:
       - checkout
       - setup_remote_docker
@@ -23,9 +23,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache \
-              py-pip=9.0.0-r1 \
-              gettext
+            apt-get install -y \
+              python-pip \
+              gettext \
             pip install \
               docker-compose==1.12.0
             gcloud components install kubectl
@@ -69,7 +69,6 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo $ACCT_AUTH | base64 -d > ${HOME}/account-auth.json
-              cat ${HOME}/account-auth.json
               gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
               gcloud config set project $PROJECT_NAME
               gcloud --quiet config set container/cluster $CLUSTER_NAME

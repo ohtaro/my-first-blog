@@ -74,6 +74,6 @@ jobs:
               gcloud --quiet container clusters get-credentials $CLUSTER_NAME
               gcloud config set container/use_client_certificate True
               gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:${CIRCLE_SHA1}
-              kubectl version
               ./deploy.sh
+              cat ./k8s/base/kustomization.yaml
             fi

@@ -19,7 +19,6 @@ jobs:
             - v1-{{ .Branch }}-{{ .Revision }}
             - v1-{{ .Branch }}-
             - v1-
-
       - run:
           name: Install dependencies
           command: |

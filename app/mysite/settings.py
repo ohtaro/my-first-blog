@@ -41,6 +41,14 @@ INSTALLED_APPS = [
     'ddtrace.contrib.django',
 ]
 
+DATADOG_TRACE = {
+    'DEFAULT_SERVICE': os.environ.get('DATADOG_APP_NAME'),
+    'TAGS': {'env': os.environ.get('DATADOG_APP_ENV')},
+    'AGENT_HOSTNAME': os.environ.get('DATADOG_TRACE_AGENT_HOSTNAME'),
+    'AGENT_PORT': os.environ.get('DD_AGENT_PORT'),
+    'ENABLED': True
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

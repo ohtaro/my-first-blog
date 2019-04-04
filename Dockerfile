@@ -6,8 +6,7 @@ RUN mkdir /app \
 COPY app /app/
 WORKDIR app
 
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    && python manage.py migrate
+RUN pip install -r requirements.txt
+RUN python manage.py migrate
 
-CMD ["ddtrace-run", "python", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["ddtrace-run", "python", "manage.py", "runserver", "0.0.0.0:80"]

@@ -46,7 +46,7 @@ DATADOG_TRACE = {
     'TAGS': {'env': os.environ.get('DATADOG_APP_ENV')},
     'AGENT_HOSTNAME': os.environ.get('DATADOG_TRACE_AGENT_HOSTNAME'),
     'AGENT_PORT': os.environ.get('DD_AGENT_PORT'),
-    'ENABLED': True
+    'ENABLED': True,
 }
 
 MIDDLEWARE = [

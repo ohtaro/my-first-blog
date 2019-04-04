@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: my-first-blog
 
 # リソース名のprefix
-namePrefix: alices-
+#namePrefix: alices-
 
 # すべてのリソースに追加するlabelとselector
 commonLabels:

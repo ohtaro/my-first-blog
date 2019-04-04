@@ -1,4 +1,34 @@
-version: "2"
+version: '3.7'
+
 services:
-  my-first-blog:
-    image: asia.gcr.io/${PROJECT_NAME}/my-first-blog:$CIRCLE_SHA1
+
+  web:
+    build: ./
+    image: asia.gcr.io/soe-gcp-development/my-first-blog:latest
+    container_name: my-first-blog
+    environment:
+      DATADOG_APP_NAME: "my-first-blog"
+      DATADOG_APP_ENV: "staging"
+      DATADOG_TRACE_AGENT_HOSTNAME: "dd-agent"
+      DD_AGENT_PORT: "8126"
+    ports:
+      - 80:80
+    networks:
+      - internal
+
+  dd-agent:
+    image: datadog/agent:latest
+    container_name: dd-agent
+    environment:
+      DD_API_KEY: "9c642e1cbdc810c95e72f3a173d1e791"
+      DD_APM_ENABLED: "true"
+      DD_APM_NON_LOCAL_TRAFFIC: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    networks:
+      - internal
+
+networks:
+  internal:

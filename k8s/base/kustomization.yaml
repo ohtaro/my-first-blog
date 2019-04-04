@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: my-first-blog
 
 # リソース名のprefix
-namePrefix: alices-
+#namePrefix: alices-
 
 # すべてのリソースに追加するlabelとselector
 commonLabels:
@@ -27,4 +27,4 @@ resources:
 
 images:
 - name: asia.gcr.io/soe-gcp-development/my-first-blog
-  newTag: 23ef82304950faf99ebb3b2acfb2d8d17050e348
+  newTag: latest

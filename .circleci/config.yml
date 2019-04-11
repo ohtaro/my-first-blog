@@ -8,9 +8,9 @@ jobs:
       CLOUDSDK_COMPUTE_ZONE: asia-northeast1-a
       DEBIAN_FRONTEND: noninteractive
       GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/account-auth.json
-      IMAGE_NAME: my-first-blog
+      APP_IMAGE_NAME: blog
     docker:
-      - image: google/cloud-sdk:240.0.0-slim
+      - image: google/cloud-sdk:241.0.0-slim
     steps:
       - checkout
       - setup_remote_docker
@@ -46,21 +46,21 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:latest -t asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:$CIRCLE_SHA1 .
-            docker tag asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:$CIRCLE_SHA1 asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:latest
+            docker build --cache-from=asia.gcr.io/${PROJECT_NAME}/${APP_IMAGE_NAME}:latest -t asia.gcr.io/${PROJECT_NAME}/${APP_IMAGE_NAME}:$CIRCLE_SHA1 ./docker-django
+            docker tag asia.gcr.io/${PROJECT_NAME}/${APP_IMAGE_NAME}:$CIRCLE_SHA1 asia.gcr.io/${PROJECT_NAME}/${APP_IMAGE_NAME}:latest
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:latest
+            docker save -o /caches/app.tar asia.gcr.io/${PROJECT_NAME}/${APP_IMAGE_NAME}:latest
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-#      - run:
-#          name: Run tests
-#          command: |
-#            docker-compose run --rm my-first-blog
+      - run:
+          name: docker-compose build
+          command: |
+            docker-compose build
       - deploy:
           name: Deploy application Docker image
           command: |
@@ -72,6 +72,7 @@ jobs:
               gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
               gcloud --quiet container clusters get-credentials $CLUSTER_NAME
               gcloud config set container/use_client_certificate True
-              gcloud docker -- push asia.gcr.io/${PROJECT_NAME}/${IMAGE_NAME}:${CIRCLE_SHA1}
+              gcloud auth configure-docker
+              docker-compose push
               ./deploy.sh
             fi

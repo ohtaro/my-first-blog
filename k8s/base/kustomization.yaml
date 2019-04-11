@@ -2,29 +2,22 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 # すべてのリソースに設定するnamespace
-namespace: my-first-blog
-
-# リソース名のprefix
-#namePrefix: alices-
+namespace: blog
 
 # すべてのリソースに追加するlabelとselector
 commonLabels:
-  app: my-first-blog
-
-# すべてのリソースに追加するAnnotation
-commonAnnotations:
-  oncallPager: 800-555-1212
+  app: blog
 
 # kustomizeでビルドする対象ファイル
 resources:
-- ./deployment.yaml
-- ./service.yaml
 - ./namespace.yaml
-
-# base
-#bases:
-#- ../../bases
+- ./nginx-deployment.yaml
+- ./nginx-service.yaml
+- ./app-deployment.yaml
+- ./app-service.yaml
 
 images:
-- name: asia.gcr.io/soe-gcp-development/my-first-blog
+- name: asia.gcr.io/soe-gcp-development/frontend
+  newTag: latest
+- name: asia.gcr.io/soe-gcp-development/app
   newTag: latest

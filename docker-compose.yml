@@ -3,16 +3,25 @@ version: '3.7'
 services:
 
   web:
-    build: ./
-    image: asia.gcr.io/soe-gcp-development/my-first-blog:latest
-    container_name: my-first-blog
-    environment:
-      DATADOG_APP_NAME: "my-first-blog"
-      DATADOG_APP_ENV: "staging"
-      DATADOG_TRACE_AGENT_HOSTNAME: "dd-agent"
-      DD_AGENT_PORT: "8126"
+    build: ./docker-nginx
+    image: asia.gcr.io/soe-trial-oota/frontend:latest
+    container_name: frontend
+    hostname: frontend
     ports:
       - 80:80
+    networks:
+      - internal
+
+  app:
+    build: ./docker-django
+    image: asia.gcr.io/soe-trial-oota/app:latest
+    environment:
+      DATADOG_APP_NAME: "my-first-blog"
+      DATADOG_APP_ENV: "local"
+      DATADOG_TRACE_AGENT_HOSTNAME: "dd-agent"
+      DD_AGENT_PORT: "8126"
+    container_name: app
+    hostname: app
     networks:
       - internal
 

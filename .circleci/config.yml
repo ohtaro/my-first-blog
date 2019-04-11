@@ -3,8 +3,8 @@ jobs:
   build:
     working_directory: /app
     environment:
-      PROJECT_NAME: soe-gcp-development
-      CLUSTER_NAME: k8s
+      PROJECT_NAME: soe-trial-oota
+      CLUSTER_NAME: ohta-k8s-development
       CLOUDSDK_COMPUTE_ZONE: asia-northeast1-a
       DEBIAN_FRONTEND: noninteractive
       GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/account-auth.json

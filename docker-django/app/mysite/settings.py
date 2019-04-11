@@ -49,6 +49,15 @@ DATADOG_TRACE = {
     'ENABLED': True,
 }
 
+LOGGING = {
+    'loggers': {
+        'ddtrace': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
+    },
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

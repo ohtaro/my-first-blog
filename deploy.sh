@@ -3,4 +3,4 @@
 set -e
 #envsubst < ./k8s/kustomization-template.yaml > "./k8s/base/kustomization.yaml"
 
-kubectl -k ./k8s/base
+kubectl apply -k ./k8s/base

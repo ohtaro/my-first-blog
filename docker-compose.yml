@@ -4,13 +4,16 @@ services:
 
   web:
     build: ./docker-nginx
-    image: asia.gcr.io/soe-trial-oota/frontend:latest
+    image: asia.gcr.io/soe-trial-oota/nginx:latest
     container_name: frontend
     hostname: frontend
+    depends_on:
+      - app
+      - db
     ports:
       - 80:80
     networks:
-      - internal
+      - frontend
 
   app:
     build: ./docker-django
@@ -22,14 +25,33 @@ services:
       DD_AGENT_PORT: "8126"
     container_name: app
     hostname: app
+    depends_on:
+      - db
     networks:
-      - internal
+      - frontend
+      - backend
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: blog
+      MYSQL_DATABASE: blog
+      MYSQL_USER: blog
+      MYSQL_PASSWORD: blog
+    container_name: mysql
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
+    networks:
+      - backend
+
 
   dd-agent:
     image: datadog/agent:latest
     container_name: dd-agent
     environment:
-      DD_API_KEY: "9c642e1cbdc810c95e72f3a173d1e791"
+      DD_API_KEY: "34e0334e1e1c7dadb8b6a4291e6a8cd1"
       DD_APM_ENABLED: "true"
       DD_APM_NON_LOCAL_TRAFFIC: "true"
     volumes:
@@ -37,7 +59,12 @@ services:
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
     networks:
-      - internal
+      - frontend
+      - backend
 
 networks:
-  internal:
+  frontend:
+  backend:
+
+volumes:
+  mysql:

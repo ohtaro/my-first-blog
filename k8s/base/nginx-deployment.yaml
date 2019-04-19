@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: frontend
+  name: nginx
 spec:
   replicas: 2
   strategy:
@@ -13,15 +13,16 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend
+        app: blog
+        tier: frontend
       annotations:
         service-discovery.datadoghq.com/frontend.check_names: '["nginx"]'
         service-discovery.datadoghq.com/frontend.init_configs: '[{}]'
         service-discovery.datadoghq.com/frontend.instances: '[{"nginx_status_url": "http://%%host%%:%%port%%/nginx_status"}]'
     spec:
       containers:
-      - name: frontend
-        image: asia.gcr.io/soe-trial-oota/frontend:latest
+      - name: nginx
+        image: asia.gcr.io/soe-trial-oota/nginx:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

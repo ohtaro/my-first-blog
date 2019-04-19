@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: django
   labels:
     app: blog
     tier: middle
@@ -18,7 +18,7 @@ spec:
         tier: middle
     spec:
       containers:
-      - name: app
+      - name: django
         image: asia.gcr.io/soe-trial-oota/app:latest
         imagePullPolicy: Always
         ports:
@@ -32,3 +32,8 @@ spec:
             value: "datadog-agent.datadog.svc.cluster.local"
           - name: DD_AGENT_PORT
             value: "8126"
+        envFrom:
+          - configMapRef:
+              name: django-db-config
+          - secretRef:
+              name: mysql-db-pass

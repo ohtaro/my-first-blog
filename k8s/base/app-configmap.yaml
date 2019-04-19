@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-db-config
+data:
+  DB_NAME: blog
+  DB_USER: blog
+  DB_HOST: mysql # mysql service name

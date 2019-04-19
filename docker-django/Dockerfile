@@ -7,6 +7,8 @@ COPY app /app/
 WORKDIR app
 
 RUN pip install -r requirements.txt
-RUN python manage.py migrate
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD ["ddtrace-run", "python", "manage.py", "runserver", "0.0.0.0:80"]
+CMD ["sh", "-c", "/entrypoint.sh"]
+#CMD ["ddtrace-run", "python", "manage.py", "runserver", "0.0.0.0:80"]

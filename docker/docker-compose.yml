@@ -17,7 +17,8 @@ services:
 
   app:
     build: ./docker-django
-    image: asia.gcr.io/soe-trial-oota/app:latest
+    #image: asia.gcr.io/soe-trial-oota/app:latest
+    image: app:latest
     environment:
       DATADOG_APP_NAME: "my-first-blog"
       DATADOG_APP_ENV: "local"

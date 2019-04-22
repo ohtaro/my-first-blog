@@ -1,0 +1,18 @@
+apiVersion: skaffold/v1beta8
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: app
+    context: ./docker/docker-django
+  - image: nginx
+    context: ./docker/docker-nginx
+  local:
+    push: false
+    useBuildkit: true
+deploy:
+  kustomize:
+    path: "./k8s/base/"
+    flags:
+      delete: ["--grace-period=0","--force"]

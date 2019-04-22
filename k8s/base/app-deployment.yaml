@@ -17,10 +17,25 @@ spec:
         app: blog
         tier: middle
     spec:
+      initContainers:
+      - name: mysql-connection-check
+        image: mysql:5.7
+        command: ["sh", "-c"]
+        args:
+          - |
+            until mysqladmin ping -h $(DB_HOST) -u $(DB_USER) --password=$(DB_PASS) --silent; do
+                echo 'waiting for mysqld to be connectable...'
+                sleep 3
+            done
+        envFrom:
+          - configMapRef:
+              name: django-db-config
+          - secretRef:
+              name: mysql-db-pass
       containers:
       - name: django
-        image: asia.gcr.io/soe-trial-oota/app:latest
-        imagePullPolicy: Always
+        image: app
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
         env:

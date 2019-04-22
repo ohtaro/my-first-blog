@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: asia.gcr.io/soe-trial-oota/nginx:latest
-        imagePullPolicy: Always
+        image: nginx
+        imagePullPolicy: Never
         ports:
         - containerPort: 80

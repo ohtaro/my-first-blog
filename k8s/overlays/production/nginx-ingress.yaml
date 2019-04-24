@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: my-first-blog
+#    kubernetes.io/ingress.allow-http: "false"
+#    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.gcp.kubernetes.io/pre-shared-cert: my-first-blog
+spec:
+  backend:
+    serviceName: nginx-ingress
+    servicePort: 80

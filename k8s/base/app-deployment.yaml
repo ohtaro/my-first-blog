@@ -20,6 +20,7 @@ spec:
       initContainers:
       - name: mysql-connection-check
         image: mysql:5.7
+        imagePullPolicy: IfNotPresent
         command: ["sh", "-c"]
         args:
           - |
@@ -35,7 +36,7 @@ spec:
       containers:
       - name: django
         image: app
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         env:

@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../base
+
+#namePrefix: prod-
+
+resources:
+- ./nginx-ingress.yaml
+- ./nginx-ingress-service.yaml
+
+patches:
+- ./mysql-deployment.yaml
+- ./mysql-service.yaml
+
+images:
+- name: app
+  newName: asia.gcr.io/soe-trial-oota/app
+- name: nginx
+  newName: asia.gcr.io/soe-trial-oota/nginx
+
+# すべてのリソースに設定するnamespace
+namespace: blog
+
+# すべてのリソースに追加するlabelとselector
+commonLabels:
+  app: blog
+  env: prod
+
+secretGenerator:
+- name: mysql-db-pass
+  behavior: merge
+  env: mysql-db-pass.env

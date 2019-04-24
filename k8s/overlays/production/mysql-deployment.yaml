@@ -1,0 +1,8 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: blog
+    tier: backend
+$patch: delete

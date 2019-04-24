@@ -1,18 +1,40 @@
 apiVersion: skaffold/v1beta8
 kind: Config
-build:
-  tagPolicy:
-    sha256: {}
-  artifacts:
-  - image: app
-    context: ./docker/docker-django
-  - image: nginx
-    context: ./docker/docker-nginx
-  local:
-    push: false
-    useBuildkit: true
-deploy:
-  kustomize:
-    path: "./k8s/base/"
-    flags:
-      delete: ["--grace-period=0","--force"]
+profiles:
+- name: prod
+  build:
+    tagPolicy:
+      dateTime:
+        format: 2006-01-02_15-04-05.999_MST
+        timezone: 
+    artifacts:
+    - image: asia.gcr.io/soe-trial-oota/app
+      context: ./docker/docker-django
+    - image: asia.gcr.io/soe-trial-oota/nginx
+      context: ./docker/docker-nginx
+    local:
+      push: true
+      useBuildkit: true
+  deploy:
+    kustomize:
+      path: "./k8s/overlays/production"
+
+- name: local
+  build:
+    tagPolicy:
+      dateTime:
+        format: 2006-01-02_15-04-05.999_MST
+        timezone: 
+    artifacts:
+    - image: app
+      context: ./docker/docker-django
+    - image: nginx
+      context: ./docker/docker-nginx
+    local:
+      push: false
+      useBuildkit: true
+  deploy:
+    kustomize:
+      path: "./k8s/base/"
+      flags:
+        delete: ["--grace-period=0","--force"]

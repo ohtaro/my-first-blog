@@ -1,12 +1,12 @@
 apiVersion: skaffold/v1beta8
 kind: Config
 profiles:
+
+### Production config
 - name: prod
   build:
     tagPolicy:
-      dateTime:
-        format: 2006-01-02_15-04-05.999_MST
-        timezone: 
+      sha256: {}
     artifacts:
     - image: asia.gcr.io/soe-trial-oota/app
       context: ./docker/docker-django
@@ -19,12 +19,11 @@ profiles:
     kustomize:
       path: "./k8s/overlays/production"
 
+### Local config
 - name: local
   build:
     tagPolicy:
-      dateTime:
-        format: 2006-01-02_15-04-05.999_MST
-        timezone: 
+      sha256: {}
     artifacts:
     - image: app
       context: ./docker/docker-django

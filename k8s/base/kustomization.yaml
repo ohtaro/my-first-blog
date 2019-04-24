@@ -11,7 +11,6 @@ commonLabels:
 # kustomizeでビルドする対象ファイル
 resources:
 - ./namespace.yaml
-- ./networkpolicy.yaml
 - ./configmap.yaml
 - ./mysql-service.yaml
 - ./mysql-deployment.yaml

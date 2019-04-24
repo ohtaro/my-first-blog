@@ -4,11 +4,11 @@ kind: Kustomization
 bases:
 - ../../base
 
-#namePrefix: prod-
-
 resources:
 - ./nginx-ingress.yaml
 - ./nginx-ingress-service.yaml
+- ./nginx-networkpolicy.yaml
+- ./app-networkpolicy.yaml
 
 patches:
 - ./mysql-deployment.yaml

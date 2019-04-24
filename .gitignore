@@ -5,6 +5,7 @@ myvenv
 db.sqlite3
 /static
 .DS_Store
-.swp
-.pass
-.env
+*.swp
+*.pass
+*.env
+*.secret

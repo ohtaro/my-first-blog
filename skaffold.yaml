@@ -18,6 +18,8 @@ profiles:
   deploy:
     kustomize:
       path: "./k8s/overlays/production"
+      flags:
+        apply: ["--validate=false"]
 
 ### Local config
 - name: local
@@ -37,3 +39,6 @@ profiles:
       path: "./k8s/base/"
       flags:
         delete: ["--grace-period=0","--force"]
+
+build: {}
+deploy: {}

@@ -6,7 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app: blog
-      tier: frontend
+      tier: middle
   ingress:
   - from:
     - podSelector:

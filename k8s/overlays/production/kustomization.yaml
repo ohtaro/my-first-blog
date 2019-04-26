@@ -9,6 +9,7 @@ resources:
 - ./nginx-ingress-service.yaml
 - ./nginx-networkpolicy.yaml
 - ./app-networkpolicy.yaml
+- ./managedcertificate.yaml
 
 patches:
 - ./mysql-deployment.yaml

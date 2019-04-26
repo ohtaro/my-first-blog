@@ -4,10 +4,10 @@ metadata:
   name: nginx-ingress
   annotations:
     kubernetes.io/ingress.global-static-ip-name: my-first-blog
+    networking.gke.io/managed-certificates: my-first-blog
 #    kubernetes.io/ingress.allow-http: "false"
 #    ingress.kubernetes.io/force-ssl-redirect: "true"
 #    ingress.gcp.kubernetes.io/pre-shared-cert: my-first-blog
-    networking.gke.io/managed-certificates: my-first-blog
 spec:
   backend:
     serviceName: nginx-ingress

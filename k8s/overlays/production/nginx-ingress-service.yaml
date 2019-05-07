@@ -4,6 +4,7 @@ metadata:
   name: nginx-ingress
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
+    beta.cloud.google.com/backend-config: '{"ports": {"80":"nginx-backendconfig"}}'
 spec:
   type: NodePort
   selector:

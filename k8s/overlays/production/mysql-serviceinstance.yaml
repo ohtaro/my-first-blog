@@ -6,7 +6,7 @@ spec:
   clusterServiceClassExternalName: cloud-sql-mysql
   clusterServicePlanExternalName: beta
   parameters:
-    instanceId: mysql01
+    instanceId: mysql02
     region: asia-northeast1
     databaseVersion: MYSQL_5_7
     settings:

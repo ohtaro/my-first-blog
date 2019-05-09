@@ -15,9 +15,9 @@ spec:
         app: blog
         tier: frontend
       annotations:
-        service-discovery.datadoghq.com/frontend.check_names: '["nginx"]'
-        service-discovery.datadoghq.com/frontend.init_configs: '[{}]'
-        service-discovery.datadoghq.com/frontend.instances: '[{"nginx_status_url": "http://%%host%%:%%port%%/nginx_status"}]'
+        service-discovery.datadoghq.com/nginx.check_names: '["nginx"]'
+        service-discovery.datadoghq.com/nginx.init_configs: '[{}]'
+        service-discovery.datadoghq.com/nginx.instances: '[{"nginx_status_url": "http://%%host%%:%%port%%/nginx_status"}]'
     spec:
       containers:
       - name: nginx

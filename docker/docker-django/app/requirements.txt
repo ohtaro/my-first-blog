@@ -1,3 +1,5 @@
 Django~=2.0.6
 ddtrace~=0.23.0
 PyMySQL~=0.9.3
+json_log_formatter~=0.2.0
+uWSGI~=2.0.18

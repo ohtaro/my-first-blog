@@ -49,14 +49,69 @@ DATADOG_TRACE = {
     'ENABLED': True,
 }
 
-#LOGGING = {
-#    'loggers': {
-#        'ddtrace': {
-#            'handlers': ['console'],
-#            'level': 'WARNING',
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'json': {
+            '()': 'json_log_formatter.JSONFormatter',
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'formatter': 'json',
+            'class': 'logging.NullHandler',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        },
+#        'django.server': {
+#            'level': 'INFO',
+#            'class': 'logging.StreamHandler',
+#            'formatter': 'json',
 #        },
-#    },
-#}
+        'mail_admins': {
+            'level': 'ERROR',
+            'formatter': 'json',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': [],
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'formatter': 'json',
+            'propagate': True,
+            'level': 'INFO',
+        },
+#        'django.server': {
+#            'handlers': ['django.server'],
+#            'formatter': 'json',
+#            'level': 'INFO',
+#            'propagate': False,
+#        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'formatter': 'json',
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'ddtrace': {
+            'handlers': ['console'],
+            'formatter': 'json',
+            'level': 'DEBUG',
+        },
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -48,6 +48,10 @@ spec:
             value: "datadog-agent.datadog.svc.cluster.local"
           - name: DD_AGENT_PORT
             value: "8126"
+          - name: DD_ANALYTICS_ENABLED
+            value: "true"
+          - name: DD_LOGS_INJECTION
+            value: "true"
         envFrom:
           - configMapRef:
               name: django-db-config

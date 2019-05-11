@@ -16,7 +16,7 @@ steps:
   - |
     docker pull asia.gcr.io/$PROJECT_ID/app:latest || exit 0
 
-# build & push nginx docker image
+# build nginx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'
   args: [
             'build',
@@ -26,16 +26,26 @@ steps:
             './docker/docker-nginx'
         ]
   id: docker build nginx
+
+# push nginx docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]
   id: docker push nginx
   waitFor:
   - docker build nginx
 
-# build & push django docker image
+# build appx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID', './docker/docker-django' ]
+  args: [
+            'build',
+            '-t',
+            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            './docker/docker-django'
+        ]
   id: docker build app
+
+# push app docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]
   id: docker push app

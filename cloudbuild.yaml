@@ -1,6 +1,6 @@
 steps:
 
-# pull nginx build cache
+# pull nginx cache
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args:
@@ -8,7 +8,7 @@ steps:
   - |
     docker pull asia.gcr.io/$PROJECT_ID/nginx:latest || exit 0
 
-# pull nginx build cache
+# pull app cache
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args:
@@ -22,7 +22,7 @@ steps:
             'build',
             '-t',
             'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:latest',
             './docker/docker-nginx'
         ]
   id: docker build nginx
@@ -40,7 +40,7 @@ steps:
             'build',
             '-t',
             'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:latest',
             './docker/docker-django'
         ]
   id: docker build app

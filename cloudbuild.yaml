@@ -6,7 +6,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/nginx:latest || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
 
 # pull app cache
 - name: 'gcr.io/cloud-builders/docker'
@@ -14,7 +14,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/app:latest || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
 
 # build nginx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'
@@ -22,7 +22,7 @@ steps:
             'build',
             '-t',
             'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:latest',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
             './docker/docker-nginx'
         ]
   id: docker build nginx
@@ -40,7 +40,7 @@ steps:
             'build',
             '-t',
             'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:latest',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
             './docker/docker-django'
         ]
   id: docker build app
@@ -60,11 +60,27 @@ steps:
   - docker push nginx
   - docker push app
 
-# deploy pods on GKE
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: [ 'apply', '-k', 'apps-gcp.yaml' ]
-  waitFor:
-  - get-credentials
+## deploy pods on GKE
+#- name: 'gcr.io/cloud-builders/kubectl'
+#  args: [ 'apply', '-k', 'apps-gcp.yaml' ]
+#  waitFor:
+#  - get-credentials
+
+
+# latest tag
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'tag',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+        ]
+# push docker image to gcr for cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME' ]
+
+# push docker image to gcr for cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
 
 timeout: 600s
 #options:
@@ -73,5 +89,5 @@ tags:
 - my-first-blog
 - ohtaro
 images:
-- 'asia.gcr.io/$PROJECT_ID/nginx:latest'
-- 'asia.gcr.io/$PROJECT_ID/app:latest'
+- 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+- 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'

@@ -87,13 +87,13 @@ steps:
 # push docker image to gcr for cache
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME' ]
-  watiFor:
+  waitFor:
   - branch tag nginx
 
 # push docker image to gcr for cache
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
-  watiFor:
+  waitFor:
   - branch app
 
 timeout: 600s

@@ -60,11 +60,11 @@ steps:
   - docker push nginx
   - docker push app
 
-## deploy pods on GKE
-#- name: 'gcr.io/cloud-builders/kubectl'
-#  args: [ 'apply', '-k', 'apps-gcp.yaml' ]
-#  waitFor:
-#  - get-credentials
+# deploy pods on GKE
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [ 'version' ]
+  waitFor:
+  - get-credentials
 
 
 # Create branch name tag for cache

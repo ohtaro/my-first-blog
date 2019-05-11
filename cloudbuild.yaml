@@ -1,4 +1,21 @@
 steps:
+
+# pull nginx build cache
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:latest || exit 0
+
+# pull nginx build cache
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker pull asia.gcr.io/$PROJECT_ID/app:latest || exit 0
+
 # build & push nginx docker image
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID', './docker/docker-nginx' ]
@@ -21,7 +38,7 @@ steps:
 
 # gcloud authenthication
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1', '--project', 'soe-trial-oota' ]
+  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1-a', '--project', 'soe-trial-oota' ]
   id: get-credentials
   waitFor:
   - docker push nginx
@@ -40,5 +57,5 @@ tags:
 - my-first-blog
 - ohtaro
 images:
-- 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID'
-- 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID'
+- 'asia.gcr.io/soe-trial-oota/nginx:latest'
+- 'asia.gcr.io/soe-trial-oota/app:latest'

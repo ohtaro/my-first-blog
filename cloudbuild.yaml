@@ -1,0 +1,44 @@
+steps:
+# build & push nginx docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID', './docker/docker-nginx' ]
+  id: docker build nginx
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID' ]
+  id: docker push nginx
+  waitFor:
+  - docker build nginx
+
+# build & push django docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID', './docker/docker-django' ]
+  id: docker build app
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID' ]
+  id: docker push app
+  waitFor:
+  - docker build app
+
+# gcloud authenthication
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1', '--project', 'soe-trial-oota' ]
+  id: get-credentials
+  waitFor:
+  - docker push nginx
+  - docker push app
+
+# deploy pods on GKE
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [ 'apply', '-k', 'apps-gcp.yaml' ]
+  waitFor:
+  - get-credentials
+
+timeout: 600s
+options:
+ machineType: 'N1_HIGHCPU_1'
+tags:
+- my-first-blog
+- ohtaro
+images:
+- 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID'
+- 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID'

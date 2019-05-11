@@ -18,27 +18,33 @@ steps:
 
 # build & push nginx docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID', './docker/docker-nginx' ]
+  args: [
+            'build',
+            '-t',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            './docker/docker-nginx'
+        ]
   id: docker build nginx
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/soe-trial-oota/nginx:$BUILD_ID' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]
   id: docker push nginx
   waitFor:
   - docker build nginx
 
 # build & push django docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID', './docker/docker-django' ]
+  args: [ 'build', '-t', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID', './docker/docker-django' ]
   id: docker build app
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/soe-trial-oota/app:$BUILD_ID' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]
   id: docker push app
   waitFor:
   - docker build app
 
 # gcloud authenthication
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1-a', '--project', 'soe-trial-oota' ]
+  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1-a', '--project', '$PROJECT_ID' ]
   id: get-credentials
   waitFor:
   - docker push nginx
@@ -57,5 +63,5 @@ tags:
 - my-first-blog
 - ohtaro
 images:
-- 'asia.gcr.io/soe-trial-oota/nginx:latest'
-- 'asia.gcr.io/soe-trial-oota/app:latest'
+- 'asia.gcr.io/$PROJECT_ID/nginx:latest'
+- 'asia.gcr.io/$PROJECT_ID/app:latest'

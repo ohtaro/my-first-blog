@@ -34,8 +34,8 @@ steps:
   - get-credentials
 
 timeout: 600s
-options:
- machineType: 'N1_HIGHCPU_1'
+#options:
+# machineType: 'N1_HIGHCPU_8'
 tags:
 - my-first-blog
 - ohtaro

@@ -121,6 +121,19 @@ steps:
   - docker push nginx
   - docker push app
 
+# Decode mysql secret
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=mysql-db-pass.env.enc
+  - --plaintext-file=mysql-db-pass.env
+  - --location=global
+  - --keyring=my-first-blog
+  - --key=blog
+  id: decode mysql secret
+
 # Set image tag
 - id: deploy
   name: 'gcr.io/$PROJECT_ID/kustomize'
@@ -135,6 +148,8 @@ steps:
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   dir: 'k8s/overlays/production'
   id: set nginx image tag
+  waitFor:
+  - decode mysql secret
 
 # Set image tag
 - id: deploy
@@ -150,6 +165,8 @@ steps:
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   dir: 'k8s/overlays/production'
   id: set app image tag
+  waitFor:
+  - decode mysql secret
 
 # Deploy pods on GKE
 - id: deploy

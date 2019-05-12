@@ -20,5 +20,5 @@ resources:
 - ./nginx-deployment.yaml
 
 secretGenerator:
-- name: mysql-db-pass
-  env: mysql-db-pass.env
+- env: mysql-db-pass.env
+  name: mysql-db-pass

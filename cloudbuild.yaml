@@ -112,7 +112,7 @@ steps:
   - 'image'
   - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
   env:
-  - 'APPLY=true'
+#  - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
   - 'GCLOUD_PROJECT=$PROJECT_ID'

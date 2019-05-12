@@ -11,13 +11,14 @@ commonLabels:
 # kustomizeでビルドする対象ファイル
 resources:
 - ./namespace.yaml
-- ./nginx-deployment.yaml
-- ./nginx-service.yaml
-- ./app-deployment.yaml
+- ./configmap.yaml
+#- ./mysql-service.yaml
+#- ./mysql-deployment.yaml
 - ./app-service.yaml
+- ./app-deployment.yaml
+- ./nginx-service.yaml
+- ./nginx-deployment.yaml
 
-images:
-- name: asia.gcr.io/soe-gcp-development/frontend
-  newTag: latest
-- name: asia.gcr.io/soe-gcp-development/app
-  newTag: latest
+secretGenerator:
+- env: mysql-db-pass.env
+  name: mysql-db-pass

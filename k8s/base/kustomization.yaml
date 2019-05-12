@@ -12,13 +12,13 @@ commonLabels:
 resources:
 - ./namespace.yaml
 - ./configmap.yaml
-- ./mysql-service.yaml
-- ./mysql-deployment.yaml
+#- ./mysql-service.yaml
+#- ./mysql-deployment.yaml
 - ./app-service.yaml
 - ./app-deployment.yaml
 - ./nginx-service.yaml
 - ./nginx-deployment.yaml
 
 secretGenerator:
-- name: mysql-db-pass
-  env: mysql-db-pass.env
+- env: mysql-db-pass.env
+  name: mysql-db-pass

@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: mysql
@@ -7,10 +7,11 @@ metadata:
     tier: backend
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: blog
-      tier: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -24,9 +25,23 @@ spec:
         ports:
         - containerPort: 80
         env:
-          - name: MYSQL_DATABASE
-            value: blog
-          - name: MYSQL_USER
-            value: blog
-          - name: MYSQL_ROOT_PASSWORD
-            value: blog
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: django-db-config
+              key: DB_NAME
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: django-db-config
+              key: DB_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-pass
+              key: DB_PASS
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-pass
+              key: DB_PASS

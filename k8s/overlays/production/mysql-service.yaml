@@ -6,6 +6,5 @@ metadata:
     app: blog
     tier: backend
 spec:
-  $patch: replace
   type: ExternalName
   externalName: 10.106.96.3

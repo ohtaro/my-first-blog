@@ -9,12 +9,13 @@ resources:
 - ./nginx-ingress-service.yaml
 - ./nginx-backendconfig.yaml
 - ./nginx-networkpolicy.yaml
+- ./mysql-service.yaml
 - ./app-networkpolicy.yaml
 - ./managedcertificate.yaml
 
-patches:
-- ./mysql-deployment.yaml
-- ./mysql-service.yaml
+#patchesStrategicMerge:
+#- ./mysql-deployment.yaml
+#- ./mysql-service.yaml
 
 images:
 - name: app
@@ -31,6 +32,6 @@ commonLabels:
   env: prod
 
 secretGenerator:
-- name: mysql-db-pass
-  behavior: merge
+- behavior: merge
   env: mysql-db-pass.env
+  name: mysql-db-pass

@@ -110,13 +110,14 @@ steps:
   - 'edit'
   - 'set'
   - 'image'
-  - 'asia.gcr.io/$PROJECT_ID/nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
   - 'k8s/overlays/prod'
   env:
   - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
   - 'GCLOUD_PROJECT=$PROJECT_ID'
+  dir: 'k8s/overlays/production'
 
 # deploy pods on GKE
 - name: 'gcr.io/cloud-builders/kubectl'

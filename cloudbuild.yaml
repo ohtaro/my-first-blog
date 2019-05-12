@@ -111,7 +111,6 @@ steps:
   - 'set'
   - 'image'
   - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
-  - 'k8s/overlays/prod'
   env:
   - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'

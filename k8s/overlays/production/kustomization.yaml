@@ -9,12 +9,13 @@ resources:
 - ./nginx-ingress-service.yaml
 - ./nginx-backendconfig.yaml
 - ./nginx-networkpolicy.yaml
+- ./mysql-service.yaml
 - ./app-networkpolicy.yaml
 - ./managedcertificate.yaml
 
-patchesStrategicMerge:
-- ./mysql-deployment.yaml
-- ./mysql-service.yaml
+#patchesStrategicMerge:
+#- ./mysql-deployment.yaml
+#- ./mysql-service.yaml
 
 images:
 - name: app

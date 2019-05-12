@@ -123,6 +123,7 @@ steps:
 
 # Decode mysql secret
 - name: gcr.io/cloud-builders/gcloud
+  id: decode mysql secret
   args:
   - kms
   - decrypt
@@ -132,13 +133,11 @@ steps:
   - --keyring=my-first-blog
   - --key=blog
   dir: 'k8s/overlays/production'
-  id: decode mysql secret
   waitFor:
   - get-credentials
 
 # Set image tag
-- id: deploy
-  name: 'gcr.io/$PROJECT_ID/kustomize'
+- name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
   - 'edit'
   - 'set'
@@ -171,8 +170,7 @@ steps:
   - decode mysql secret
 
 # Deploy pods on GKE
-- id: deploy
-  name: 'gcr.io/$PROJECT_ID/kustomize'
+- name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
   - 'build'
   - 'k8s/overlays/production'

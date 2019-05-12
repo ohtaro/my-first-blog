@@ -25,7 +25,8 @@ steps:
             'build',
             '-t',
             'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
+            '--cache-from',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
             './docker/docker-nginx'
         ]
   id: docker build nginx
@@ -109,7 +110,7 @@ steps:
   - 'edit'
   - 'set'
   - 'image'
-  - 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  - 'asia.gcr.io/$PROJECT_ID/nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
   - 'k8s/overlays/prod'
   env:
   - 'APPLY=true'

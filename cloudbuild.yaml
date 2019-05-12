@@ -10,6 +10,8 @@ tags:
 images:
 - 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
 - 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+- 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+- 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
 
 # build machine type
 #options:

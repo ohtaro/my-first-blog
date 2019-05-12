@@ -122,7 +122,6 @@ steps:
   - docker push app
 
 # Decode mysql secret
-steps:
 - name: gcr.io/cloud-builders/gcloud
   args:
   - kms

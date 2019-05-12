@@ -114,7 +114,7 @@ steps:
   env:
   - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=soe-trial-oota'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production',
   - 'GCLOUD_PROJECT=$PROJECT_ID'
 
 # deploy pods on GKE

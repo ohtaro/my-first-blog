@@ -1,5 +1,8 @@
 steps:
 
+# -----------------------------------------------
+# Docker build & push
+# -----------------------------------------------
 # pull nginx cache
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
@@ -52,20 +55,6 @@ steps:
   waitFor:
   - docker build app
 
-# gcloud authenthication
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: [ 'container', 'clusters', 'get-credentials', 'ohta-k8s-production', '--zone', 'asia-northeast1-a', '--project', '$PROJECT_ID' ]
-  id: get-credentials
-  waitFor:
-  - docker push nginx
-  - docker push app
-
-# deploy pods on GKE
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: [ 'version' ]
-  waitFor:
-  - get-credentials
-
 # Create branch name tag for cache
 - name: 'gcr.io/cloud-builders/docker'
   args: [
@@ -94,6 +83,46 @@ steps:
   args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
   waitFor:
   - branch tag app
+
+# -----------------------------------------------
+# Deploy pods on GKE
+# -----------------------------------------------
+# gcloud authenthication
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+            'container',
+            'clusters',
+            'get-credentials',
+            'ohta-k8s-production',
+            '--zone', 'asia-northeast1-a',
+            '--project', '$PROJECT_ID'
+        ]
+  id: get-credentials
+  waitFor:
+  - docker push nginx
+  - docker push app
+
+# Deploy pods on GEK
+- id: deploy
+  name: 'gcr.io/$PROJECT_ID/kustomize'
+  args:
+  - 'edit'
+  - 'set'
+  - 'image'
+  - 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  - 'k8s/overlays/prod'
+  env:
+  - 'APPLY=true'
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=soe-trial-oota'
+  - 'GCLOUD_PROJECT=$PROJECT_ID'
+
+# deploy pods on GKE
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [ 'version' ]
+  waitFor:
+  - get-credentials
+
 
 # build timeout
 timeout: 600s

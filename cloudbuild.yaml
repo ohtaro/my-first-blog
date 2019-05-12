@@ -183,7 +183,8 @@ steps:
   dir: 'k8s/overlays/production'
   id: set app image tag
   waitFor:
-  - decode mysql secret
+  - decode mysql secret for base
+  - decode mysql secret for prod
 
 # Deploy pods on GKE
 - name: 'gcr.io/$PROJECT_ID/kustomize'

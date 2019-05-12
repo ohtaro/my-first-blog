@@ -1,3 +1,21 @@
+# build timeout
+timeout: 600s
+
+# build tag
+tags:
+- my-first-blog
+- ohtaro
+
+# build image
+images:
+- 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+- 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+
+# build machine type
+#options:
+# machineType: 'N1_HIGHCPU_8'
+
+
 steps:
 
 # -----------------------------------------------
@@ -103,7 +121,7 @@ steps:
   - docker push nginx
   - docker push app
 
-# Deploy pods on GEK
+# Set image tag
 - id: deploy
   name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
@@ -112,32 +130,39 @@ steps:
   - 'image'
   - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
   env:
-#  - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   dir: 'k8s/overlays/production'
+  id: set nginx image tag
 
-# deploy pods on GKE
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: [ 'version' ]
+# Set image tag
+- id: deploy
+  name: 'gcr.io/$PROJECT_ID/kustomize'
+  args:
+  - 'edit'
+  - 'set'
+  - 'image'
+  - 'app=asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
+  - 'GCLOUD_PROJECT=$PROJECT_ID'
+  dir: 'k8s/overlays/production'
+  id: set app image tag
+
+# Deploy pods on GKE
+- id: deploy
+  name: 'gcr.io/$PROJECT_ID/kustomize'
+  args:
+  - 'build'
+  - 'k8s/overlays/production'
+  env:
+  - 'APPLY=true'
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
+  - 'GCLOUD_PROJECT=$PROJECT_ID'
+  id: deploy pods
   waitFor:
-  - get-credentials
-
-
-# build timeout
-timeout: 600s
-
-# build tag
-tags:
-- my-first-blog
-- ohtaro
-
-# build image
-images:
-- 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
-- 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
-
-# build machine type
-#options:
-# machineType: 'N1_HIGHCPU_8'
+  - set nginx image tag
+  - set app image tag

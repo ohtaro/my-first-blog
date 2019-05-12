@@ -132,7 +132,10 @@ steps:
   - --location=global
   - --keyring=my-first-blog
   - --key=blog
+  dir: 'k8s/overlays/production'
   id: decode mysql secret
+  waitFor:
+  - get-credentials
 
 # Set image tag
 - id: deploy

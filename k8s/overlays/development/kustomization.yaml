@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# すべてのリソースに設定するnamespace
+namespace: blog
+
+# すべてのリソースに追加するlabelとselector
+commonLabels:
+  app: blog
+
+# kustomizeでビルドする対象ファイル
+resources:
+- ./namespace.yaml
+- ./configmap.yaml
+#- ./mysql-service.yaml
+#- ./mysql-deployment.yaml
+- ./app-service.yaml
+- ./app-deployment.yaml
+- ./nginx-service.yaml
+- ./nginx-deployment.yaml
+
+secretGenerator:
+- env: mysql-db-pass.env
+  name: mysql-db-pass

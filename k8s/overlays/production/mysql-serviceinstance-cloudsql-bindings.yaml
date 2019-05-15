@@ -1,0 +1,12 @@
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: cloudsql-binding
+spec:
+  instanceRef:
+    name: cloudsql
+  secretName: cloudsql-serviceaccount
+  parameters:
+    roles:
+      - roles/cloudsql.client
+    serviceAccount: cloud-sql-service-account

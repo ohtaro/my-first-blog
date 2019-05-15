@@ -1,0 +1,10 @@
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: cloudsql-serviceaccount
+spec:
+  clusterServiceClassExternalName: cloud-iam-service-account
+  clusterServicePlanExternalName: beta
+  parameters:
+    accountId: cloud-sql-service-account
+    displayName: "Service account for Cloud SQL"

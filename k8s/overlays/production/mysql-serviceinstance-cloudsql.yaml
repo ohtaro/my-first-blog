@@ -1,12 +1,12 @@
 apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ServiceInstance
 metadata:
-  name: mysql
+  name: cloudsql
 spec:
   clusterServiceClassExternalName: cloud-sql-mysql
   clusterServicePlanExternalName: beta
   parameters:
-    instanceId: mysql02
+    instanceId: blog
     region: asia-northeast1
     databaseVersion: MYSQL_5_7
     settings:
@@ -16,7 +16,7 @@ spec:
         value: utf8mb4
       ipConfiguration:
         ipv4Enabled: false
-        privateNetwork: "projects/soe-trial-oota/global/networks/default"
+        privateNetwork: "projects/soe-gcp-development/global/networks/default"
       backupConfiguration:
         binaryLogEnabled: true
         enabled: true

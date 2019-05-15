@@ -8,9 +8,9 @@ profiles:
     tagPolicy:
       sha256: {}
     artifacts:
-    - image: asia.gcr.io/soe-trial-oota/app
+    - image: asia.gcr.io/soe-gcp-development/app
       context: ./docker/docker-django
-    - image: asia.gcr.io/soe-trial-oota/nginx
+    - image: asia.gcr.io/soe-gcp-development/nginx
       context: ./docker/docker-nginx
     local:
       push: true

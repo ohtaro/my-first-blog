@@ -13,3 +13,5 @@ spec:
   selector:
     app: blog
     tier: frontend
+  loadBalancerSourceRanges:
+  - 0.0.0.0/0

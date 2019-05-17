@@ -7,7 +7,7 @@ bases:
 resources:
 - ./nginx-ingress.yaml
 - ./nginx-ingress-service.yaml
-- ./nginx-backendconfig.yaml
+- ./ingress-backendconfig-cloudcdn.yaml
 - ./nginx-networkpolicy.yaml
 - ./mysql-service.yaml
 - ./app-networkpolicy.yaml

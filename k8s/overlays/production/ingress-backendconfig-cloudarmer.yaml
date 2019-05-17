@@ -1,0 +1,7 @@
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: ingress-cloudarmer
+spec:
+  securityPolicy:
+    name: "blog-security-policy"

@@ -1,4 +1,4 @@
-apiVersion: skaffold/v1beta8
+apiVersion: skaffold/v1beta9
 kind: Config
 profiles:
 
@@ -8,9 +8,9 @@ profiles:
     tagPolicy:
       sha256: {}
     artifacts:
-    - image: asia.gcr.io/soe-gcp-development/app
+    - image: asia.gcr.io/soe-trial-ohta/app
       context: ./docker/docker-django
-    - image: asia.gcr.io/soe-gcp-development/nginx
+    - image: asia.gcr.io/soe-trial-ohta/nginx
       context: ./docker/docker-nginx
     local:
       push: true

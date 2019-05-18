@@ -30,6 +30,7 @@ steps:
   - '-c'
   - |
     docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
+  id: pull nginx cache
 
 # pull app cache
 - name: 'gcr.io/cloud-builders/docker'
@@ -38,6 +39,7 @@ steps:
   - '-c'
   - |
     docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
+  - id: pull app cache
 
 # build nginx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'
@@ -50,6 +52,8 @@ steps:
             './docker/docker-nginx'
         ]
   id: docker build nginx
+  waitFor:
+  - pull nginx cache
 
 # push nginx docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'
@@ -68,6 +72,8 @@ steps:
             './docker/docker-django'
         ]
   id: docker build app
+  waitFor:
+  - pull app cache
 
 # push app docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'

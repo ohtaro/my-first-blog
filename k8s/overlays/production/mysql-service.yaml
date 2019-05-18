@@ -7,4 +7,4 @@ metadata:
     tier: backend
 spec:
   type: ExternalName
-  externalName: 10.106.96.3
+  externalName: 172.21.48.3

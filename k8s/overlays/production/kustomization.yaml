@@ -7,7 +7,7 @@ bases:
 resources:
 - ./nginx-ingress.yaml
 - ./nginx-ingress-service.yaml
-- ./ingress-backendconfig-cloudcdn.yaml
+- ./ingress-backendconfig.yaml
 - ./nginx-networkpolicy.yaml
 - ./mysql-service.yaml
 - ./app-networkpolicy.yaml
@@ -19,9 +19,9 @@ resources:
 
 images:
 - name: app
-  newName: asia.gcr.io/soe-trial-oota/app
+  newName: asia.gcr.io/soe-trial-ohta/app
 - name: nginx
-  newName: asia.gcr.io/soe-trial-oota/nginx
+  newName: asia.gcr.io/soe-trial-ohta/nginx
 
 # すべてのリソースに設定するnamespace
 namespace: blog

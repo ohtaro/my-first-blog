@@ -1,7 +1,7 @@
 apiVersion: cloud.google.com/v1beta1
 kind: BackendConfig
 metadata:
-  name: ingress-cloudcdn
+  name: ingress-backendconfig
 spec:
   cdn:
     enabled: true
@@ -9,3 +9,5 @@ spec:
       includeHost: true
       includeProtocol: true
       includeQueryString: false
+#  securityPolicy:
+#    name: ""

@@ -7,11 +7,11 @@ bases:
 resources:
 - ./nginx-ingress.yaml
 - ./nginx-ingress-service.yaml
-- ./ingress-backendconfig.yaml
 - ./nginx-networkpolicy.yaml
 - ./mysql-service.yaml
 - ./app-networkpolicy.yaml
-- ./managedcertificate.yaml
+- ./ingress-managedcertificate.yaml
+- ./ingress-backendconfig.yaml
 
 #patchesStrategicMerge:
 #- ./mysql-deployment.yaml

@@ -8,7 +8,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: go
+    app: blog
   ports:
   - port: 80
     protocol: TCP

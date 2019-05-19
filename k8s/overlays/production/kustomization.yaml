@@ -12,6 +12,7 @@ resources:
 - ./app-networkpolicy.yaml
 - ./ingress-managedcertificate.yaml
 - ./ingress-backendconfig.yaml
+- ./deny-all-networkpolicy.yaml
 
 #patchesStrategicMerge:
 #- ./mysql-deployment.yaml

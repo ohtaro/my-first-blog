@@ -3,11 +3,13 @@ kind: BackendConfig
 metadata:
   name: ingress-backendconfig
 spec:
-  cdn:
-    enabled: true
-    cachePolicy:
-      includeHost: true
-      includeProtocol: true
-      includeQueryString: false
-#  securityPolicy:
-#    name: ""
+  # Cloud CDN cannot be set if security policy is enabled.
+#  cdn:
+#    enabled: true
+#    cachePolicy:
+#      includeHost: true
+#      includeProtocol: true
+#      includeQueryString: false
+  securityPolicy:
+    name: ""
+#    name: "blog-security-policy"

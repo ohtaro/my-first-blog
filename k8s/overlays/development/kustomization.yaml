@@ -1,6 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+bases:
+- ../../base
+
 # すべてのリソースに設定するnamespace
 namespace: blog
 
@@ -10,15 +13,17 @@ commonLabels:
 
 # kustomizeでビルドする対象ファイル
 resources:
-- ./namespace.yaml
-- ./configmap.yaml
-#- ./mysql-service.yaml
-#- ./mysql-deployment.yaml
-- ./app-service.yaml
-- ./app-deployment.yaml
-- ./nginx-service.yaml
-- ./nginx-deployment.yaml
+- mysql-statefulset.yaml
+- mysql-service-clusterip.yaml
+- mysql-configmap.yaml
+
+images:
+- name: app
+  newName: asia.gcr.io/soe-trial-ohta/app
+- name: nginx
+  newName: asia.gcr.io/soe-trial-ohta/nginx
 
 secretGenerator:
-- env: mysql-db-pass.env
+- behavior: merge
+  env: mysql-db-pass.env
   name: mysql-db-pass

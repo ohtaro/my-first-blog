@@ -1,8 +1,8 @@
 substitutions:
-  _NGINX_IMAGE_CACHE: asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME
-  _NGINX_IMAGE: asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID
-  _APP_IMAGE_CACHE: asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME
-  _APP_IMAGE: asia.gcr.io/$PROJECT_ID/app:$BUILD_ID
+  _NGINX_IMAGE_CACHE: 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+  _NGINX_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  _APP_IMAGE_CACHE: 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+  _APP_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
   _REGION: 'asia-northeast1'
   _ZONE: 'asia-northeast1-a'
   _CLUSTER: 'development'
@@ -39,9 +39,8 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:$_CLUSTER || exit 0
   id: pull nginx cache
-#    docker pull ${_NGINX_IMAGE_CACHE} || exit 0
 
 # pull app cache
 - name: 'gcr.io/cloud-builders/docker'

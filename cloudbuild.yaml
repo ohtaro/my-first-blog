@@ -49,7 +49,7 @@ steps:
   - '-c'
   - |
     docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
-  - id: pull app cache
+  id: pull app cache
 
 ## build nginx docker image from cache
 #- name: 'gcr.io/cloud-builders/docker'

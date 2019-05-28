@@ -39,7 +39,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull '${_NGINX_IMAGE_CACHE}' || exit 0
+    docker pull ${_NGINX_IMAGE_CACHE} || exit 0
   id: pull nginx cache
 
 #    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
@@ -49,24 +49,26 @@ steps:
   args:
   - '-c'
   - |
-    docker pull '${_APP_IMAGE_CACHE}' || exit 0
+    docker pull ${_APP_IMAGE_CACHE} || exit 0
   id: pull app cache
 #    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
 
-## build nginx docker image from cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [
-#            'build',
-#            '-t',
+# build nginx docker image from cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'build',
+            '-t',
+            '${_NGINX_IMAGE}',
+            '--cache-from',
+            '${_NGINX_IMAGE_CACHE}',
+            './docker/docker-nginx'
+        ]
+  id: docker build nginx
+  waitFor:
+  - pull nginx cache
 #            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-#            '--cache-from',
 #            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
-#            './docker/docker-nginx'
-#        ]
-#  id: docker build nginx
-#  waitFor:
-#  - pull nginx cache
-#
+
 ## push nginx docker image to gcr
 #- name: 'gcr.io/cloud-builders/docker'
 #  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]

@@ -67,19 +67,19 @@ steps:
   waitFor:
   - docker build nginx
 
-## build appx docker image from cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [
-#            'build',
-#            '-t',
-#            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-#            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
-#            './docker/docker-django'
-#        ]
-#  id: docker build app
-#  waitFor:
-#  - pull app cache
-#
+# build appx docker image from cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'build',
+            '-t',
+            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
+            './docker/docker-django'
+        ]
+  id: docker build app
+  waitFor:
+  - pull app cache
+
 ## push app docker image to gcr
 #- name: 'gcr.io/cloud-builders/docker'
 #  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]

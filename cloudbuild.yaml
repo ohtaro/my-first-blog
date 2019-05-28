@@ -42,15 +42,15 @@ steps:
     docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
   id: pull nginx cache
 
-## pull app cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  entrypoint: 'bash'
-#  args:
-#  - '-c'
-#  - |
-#    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
-#  - id: pull app cache
-#
+# pull app cache
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
+  - id: pull app cache
+
 ## build nginx docker image from cache
 #- name: 'gcr.io/cloud-builders/docker'
 #  args: [

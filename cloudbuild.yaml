@@ -39,19 +39,19 @@ steps:
   args:
   - '-c'
   - |
-    docker pull ${_NGINX_IMAGE_CACHE} || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
   id: pull nginx cache
+#    docker pull ${_NGINX_IMAGE_CACHE} || exit 0
 
-#    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
 # pull app cache
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args:
   - '-c'
   - |
-    docker pull ${_APP_IMAGE_CACHE} || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
   id: pull app cache
-#    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
+#    docker pull ${_APP_IMAGE_CACHE} || exit 0
 
 # build nginx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'

@@ -55,14 +55,21 @@ steps:
 
 # build nginx docker image from cache
 - name: 'gcr.io/cloud-builders/docker'
-  args: [
-            'build',
-            '-t',
-            "${_NGINX_IMAGE}",
-            '--cache-from',
-            "${_NGINX_IMAGE_CACHE}",
-            './docker/docker-nginx'
-        ]
+  args: 
+  - 'build'
+  - '-t'
+  - ${_NGINX_IMAGE}
+  - '--cache-from'
+  - ${_NGINX_IMAGE_CACHE}
+  - './docker/docker-nginx'
+#  args: [
+#            'build',
+#            '-t',
+#            "${_NGINX_IMAGE}",
+#            '--cache-from',
+#            "${_NGINX_IMAGE_CACHE}",
+#            './docker/docker-nginx'
+#        ]
   id: docker build nginx
   waitFor:
   - pull nginx cache

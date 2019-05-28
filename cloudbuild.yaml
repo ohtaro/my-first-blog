@@ -1,11 +1,11 @@
-substitutions:
-  _NGINX_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
-  _NGINX_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
-  _APP_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
-  _APP_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
-  _REGION: 'asia-northeast1'
-  _ZONE: 'asia-northeast1-a'
-  _CLUSTER: 'development'
+#substitutions:
+#  _NGINX_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+#  _NGINX_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+#  _APP_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+#  _APP_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+#  _REGION: 'asia-northeast1'
+#  _ZONE: 'asia-northeast1-a'
+#  _CLUSTER: 'development'
 
 # build timeout
 timeout: 600s

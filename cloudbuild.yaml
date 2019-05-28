@@ -48,6 +48,7 @@ steps:
   id: pull app cache
 
 # build nginx docker image from cache
+- name: 'gcr.io/cloud-builders/docker'
   args: [
             'build',
             '-t',
@@ -58,7 +59,7 @@ steps:
         ]
   id: docker build nginx
   waitFor:
-  - pull nginx cache
+  - pull app cache
 
 # push nginx docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'

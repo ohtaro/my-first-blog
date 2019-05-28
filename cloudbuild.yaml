@@ -1,8 +1,4 @@
 substitutions:
-  _NGINX_IMAGE_CACHE: 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
-  _NGINX_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
-  _APP_IMAGE_CACHE: 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
-  _APP_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
   _REGION: 'asia-northeast1'
   _ZONE: 'asia-northeast1-a'
   _CLUSTER: 'development'
@@ -39,7 +35,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/nginx:$_CLUSTER || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
   id: pull nginx cache
 
 # pull app cache
@@ -53,84 +49,74 @@ steps:
 #    docker pull ${_APP_IMAGE_CACHE} || exit 0
 
 # build nginx docker image from cache
-- name: 'gcr.io/cloud-builders/docker'
-  args: 
-  - 'build'
-  - '-t'
-  - ${_NGINX_IMAGE}
-  - '--cache-from'
-  - ${_NGINX_IMAGE_CACHE}
-  - './docker/docker-nginx'
-#  args: [
-#            'build',
-#            '-t',
-#            "${_NGINX_IMAGE}",
-#            '--cache-from',
-#            "${_NGINX_IMAGE_CACHE}",
-#            './docker/docker-nginx'
-#        ]
+  args: [
+            'build',
+            '-t',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            '--cache-from',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
+            './docker/docker-nginx'
+        ]
   id: docker build nginx
   waitFor:
   - pull nginx cache
-#            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-#            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
 
-## push nginx docker image to gcr
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]
-#  id: docker push nginx
-#  waitFor:
-#  - docker build nginx
-#
-## build appx docker image from cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [
-#            'build',
-#            '-t',
-#            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-#            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
-#            './docker/docker-django'
-#        ]
-#  id: docker build app
-#  waitFor:
-#  - pull app cache
-#
-## push app docker image to gcr
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]
-#  id: docker push app
-#  waitFor:
-#  - docker build app
-#
-## Create branch name tag for cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [
-#            'tag',
-#            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-#            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
-#        ]
-#  id: branch tag nginx
-#
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [
-#            'tag',
-#            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-#            'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
-#        ]
-#  id: branch tag app
-#
-## push docker image to gcr for cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME' ]
-#  waitFor:
-#  - branch tag nginx
-#
-## push docker image to gcr for cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
-#  waitFor:
-#  - branch tag app
-#
+# push nginx docker image to gcr
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]
+  id: docker push nginx
+  waitFor:
+  - docker build nginx
+
+# build appx docker image from cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'build',
+            '-t',
+            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
+            './docker/docker-django'
+        ]
+  id: docker build app
+  waitFor:
+  - pull app cache
+
+# push app docker image to gcr
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]
+  id: docker push app
+  waitFor:
+  - docker build app
+
+# Create branch name tag for cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'tag',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+        ]
+  id: branch tag nginx
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'tag',
+            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
+            'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+        ]
+  id: branch tag app
+
+# push docker image to gcr for cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME' ]
+  waitFor:
+  - branch tag nginx
+
+# push docker image to gcr for cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
+  waitFor:
+  - branch tag app
+
 ## -----------------------------------------------
 ## Deploy pods on GKE
 ## -----------------------------------------------

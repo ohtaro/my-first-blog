@@ -58,9 +58,9 @@ steps:
   args: [
             'build',
             '-t',
-            ${_NGINX_IMAGE},
+            "${_NGINX_IMAGE}",
             '--cache-from',
-            ${_NGINX_IMAGE_CACHE},
+            "${_NGINX_IMAGE_CACHE}",
             './docker/docker-nginx'
         ]
   id: docker build nginx

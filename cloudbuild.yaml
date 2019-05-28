@@ -1,3 +1,12 @@
+substitutions:
+  _NGINX_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+  _NGINX_IMAGE: 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  _APP_CACHE_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+  _APP_IMAGE: 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+  _REGION: 'asia-northeast1'
+  _ZONE: 'asia-northeast1-a'
+  _CLUSTER: 'development'
+
 # build timeout
 timeout: 600s
 
@@ -12,6 +21,7 @@ images:
 - 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
 - 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
 - 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+
 
 # build machine type
 #options:
@@ -120,7 +130,7 @@ steps:
             'container',
             'clusters',
             'get-credentials',
-            'ohta-k8s-production',
+            '${_CLUSTER}',
             '--zone', 'asia-northeast1-a',
             '--project', '$PROJECT_ID'
         ]
@@ -168,7 +178,7 @@ steps:
   - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   dir: 'k8s/overlays/production'
   id: set nginx image tag
@@ -186,7 +196,7 @@ steps:
   - 'app=asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   dir: 'k8s/overlays/production'
   id: set app image tag
@@ -202,7 +212,7 @@ steps:
   env:
   - 'APPLY=true'
   - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ohta-k8s-production'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
   - 'GCLOUD_PROJECT=$PROJECT_ID'
   id: deploy pods
   waitFor:

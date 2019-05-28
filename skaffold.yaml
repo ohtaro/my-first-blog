@@ -21,6 +21,25 @@ profiles:
       flags:
         apply: ["--validate=false"]
 
+### Development Config
+- name: dev
+  build:
+    tagPolicy:
+      sha256: {}
+    artifacts:
+    - image: asia.gcr.io/soe-trial-ohta/app
+      context: ./docker/docker-django
+    - image: asia.gcr.io/soe-trial-ohta/nginx
+      context: ./docker/docker-nginx
+    local:
+      push: true
+      useBuildkit: true
+  deploy:
+    kustomize:
+      path: "./k8s/overlays/development"
+      flags:
+        delete: ["--grace-period=0","--force"]
+
 ### Local config
 - name: local
   build:
@@ -36,7 +55,6 @@ profiles:
       useBuildkit: true
   deploy:
     kustomize:
-      path: "./k8s/base/"
+      path: "./k8s/overlays/local"
       flags:
         delete: ["--grace-period=0","--force"]
-

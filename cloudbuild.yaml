@@ -14,10 +14,10 @@ tags:
 
 # build image
 images:
-- 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
-- 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
-- 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
-- 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+- 'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BRANCH_NAME'
+- 'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BRANCH_NAME'
+- 'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BUILD_ID'
+- 'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BUILD_ID'
 
 
 # build machine type
@@ -36,7 +36,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BRANCH_NAME || exit 0
   id: pull nginx cache
 
 # pull app cache
@@ -45,7 +45,7 @@ steps:
   args:
   - '-c'
   - |
-    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
+    docker pull asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BRANCH_NAME || exit 0
   id: pull app cache
 
 # build nginx docker image from cache
@@ -53,9 +53,9 @@ steps:
   args: [
             'build',
             '-t',
-            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BUILD_ID',
             '--cache-from',
-            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BRANCH_NAME',
             './docker/docker-nginx'
         ]
   id: docker build nginx
@@ -64,7 +64,7 @@ steps:
 
 # push nginx docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BUILD_ID' ]
   id: docker push nginx
   waitFor:
   - docker build nginx
@@ -74,8 +74,8 @@ steps:
   args: [
             'build',
             '-t',
-            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-            '--cache-from', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME',
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BUILD_ID',
+            '--cache-from', 'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BRANCH_NAME',
             './docker/docker-django'
         ]
   id: docker build app
@@ -84,7 +84,7 @@ steps:
 
 # push app docker image to gcr
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BUILD_ID' ]
   id: docker push app
   waitFor:
   - docker build app
@@ -93,28 +93,28 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
             'tag',
-            'asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID',
-            'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME'
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BUILD_ID',
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BRANCH_NAME'
         ]
   id: branch tag nginx
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [
             'tag',
-            'asia.gcr.io/$PROJECT_ID/app:$BUILD_ID',
-            'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME'
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BUILD_ID',
+            'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BRANCH_NAME'
         ]
   id: branch tag app
 
 # push docker image to gcr for cache
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BRANCH_NAME' ]
   waitFor:
   - branch tag nginx
 
 # push docker image to gcr for cache
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME' ]
+  args: [ 'push', 'asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BRANCH_NAME' ]
   waitFor:
   - branch tag app
 
@@ -167,12 +167,12 @@ steps:
   - get-credentials
 
 # Set image tag
-- name: 'gcr.io/$PROJECT_ID/kustomize'
+- name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
   args:
   - 'edit'
   - 'set'
   - 'image'
-  - 'nginx=asia.gcr.io/$PROJECT_ID/nginx:$BUILD_ID'
+  - 'nginx=asia.gcr.io/$PROJECT_ID/${_TEAM}/nginx:$BUILD_ID'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
@@ -185,12 +185,12 @@ steps:
 
 # Set image tag
 - id: deploy
-  name: 'gcr.io/$PROJECT_ID/kustomize'
+  name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
   args:
   - 'edit'
   - 'set'
   - 'image'
-  - 'app=asia.gcr.io/$PROJECT_ID/app:$BUILD_ID'
+  - 'app=asia.gcr.io/$PROJECT_ID/${_TEAM}/app:$BUILD_ID'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER}'
@@ -202,7 +202,7 @@ steps:
   - decode mysql secret for prod
 
 # Deploy pods on GKE
-- name: 'gcr.io/$PROJECT_ID/kustomize'
+- name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
   args:
   - 'build'
   - 'k8s/overlays/production'

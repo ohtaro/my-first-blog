@@ -167,7 +167,7 @@ steps:
   - get-credentials
 
 # Set image tag
-- name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
+- name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
   - 'edit'
   - 'set'
@@ -185,7 +185,7 @@ steps:
 
 # Set image tag
 - id: deploy
-  name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
+  name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
   - 'edit'
   - 'set'
@@ -202,7 +202,7 @@ steps:
   - decode mysql secret for prod
 
 # Deploy pods on GKE
-- name: 'gcr.io/$PROJECT_ID/${_TEAM}/kustomize'
+- name: 'gcr.io/$PROJECT_ID/kustomize'
   args:
   - 'build'
   - 'k8s/overlays/production'

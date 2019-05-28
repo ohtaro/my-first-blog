@@ -40,7 +40,7 @@ steps:
   - '-c'
   - |
 #    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
-    docker pull ${_NGINX_IMAGE_CACHE} || exit 0
+    docker pull '${_NGINX_IMAGE_CACHE}' || exit 0
   id: pull nginx cache
 
 # pull app cache
@@ -50,7 +50,7 @@ steps:
   - '-c'
   - |
 #    docker pull asia.gcr.io/$PROJECT_ID/app:$BRANCH_NAME || exit 0
-    docker pull ${_APP_IMAGE_CACHE} || exit 0
+    docker pull '${_APP_IMAGE_CACHE}' || exit 0
   id: pull app cache
 
 ## build nginx docker image from cache

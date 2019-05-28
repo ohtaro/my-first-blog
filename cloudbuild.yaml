@@ -30,18 +30,18 @@ images:
 
 steps:
 
-## -----------------------------------------------
-## Docker build & push
-## -----------------------------------------------
-## pull nginx cache
-#- name: 'gcr.io/cloud-builders/docker'
-#  entrypoint: 'bash'
-#  args:
-#  - '-c'
-#  - |
-#    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
-#  id: pull nginx cache
-#
+# -----------------------------------------------
+# Docker build & push
+# -----------------------------------------------
+# pull nginx cache
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker pull asia.gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME || exit 0
+  id: pull nginx cache
+
 ## pull app cache
 #- name: 'gcr.io/cloud-builders/docker'
 #  entrypoint: 'bash'

@@ -5,7 +5,7 @@ bases:
 - ../../base
 
 # すべてのリソースに設定するnamespace
-namespace: blog
+namespace: blog-dev
 
 # すべてのリソースに追加するlabelとselector
 commonLabels:
@@ -16,6 +16,7 @@ resources:
 - mysql-statefulset.yaml
 - mysql-service-clusterip.yaml
 - mysql-configmap.yaml
+- namespace.yaml
 
 images:
 - name: app

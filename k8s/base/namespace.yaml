@@ -4,3 +4,4 @@ metadata:
   name: blog
   labels:
     namespace: blog
+    istio-injection: enabled

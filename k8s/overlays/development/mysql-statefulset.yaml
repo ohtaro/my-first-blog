@@ -19,24 +19,18 @@ spec:
         tier: backend
     spec:
       securityContext:
-        runAsUser: 2000
-        runAsGroup: 2000
-        fsGroup: 2000
+        fsGroup: 999
       containers:
       - name: mysql
         image: mysql:5.7
         imagePullPolicy: IfNotPresent
-        workingDir: /var/lib/mysql
-        command: ['tail', '-f', '/dev/null']
-#        command: ['sh', '-c']
-#        args:
-#        - |
-#          if [ -e /var/lib/mysql/lost+found ]; then
-#             rm -rfv /var/lib/mysql/lost+found
-#             mysqld --ignore-db-dir=lost+found \
-#                    --user=2000 \
-#                    --initialize
-#          fi
+        command: ['sh', '-c']
+        args:
+        - |
+          if [ -e /var/lib/mysql/lost+found ]; then
+             rm -rfv /var/lib/mysql/lost+found
+          fi
+          docker-entrypoint.sh mysqld
         ports:
         - containerPort: 80
         env:

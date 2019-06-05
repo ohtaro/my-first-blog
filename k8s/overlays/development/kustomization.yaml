@@ -20,9 +20,9 @@ resources:
 
 images:
 - name: app
-  newName: asia.gcr.io/soe-trial-ohta/app
+  newName: asia.gcr.io/soe-gcp-development/app
 - name: nginx
-  newName: asia.gcr.io/soe-trial-ohta/nginx
+  newName: asia.gcr.io/soe-gcp-development/nginx
 
 secretGenerator:
 - behavior: merge
